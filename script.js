@@ -1,12 +1,12 @@
-let Libros = [];
+let libros = [];
 
 class Libro {
-  constructor(codigo,nombre, autor, editorial, precioVenta, cantidad) {
+  constructor(codigo,nombre, autor, editorial, precio, cantidad) {
     this.codigo = codigo;
     this.nombre = nombre;
     this.autor = autor;
     this.editorial = editorial;
-    this.precioVenta = precioVenta;
+    this.precio = precio;
     this.cantidad = cantidad;
   }
 
@@ -18,8 +18,8 @@ class Libro {
       alert("Ya no hay disponibilidad");
     }
   }
-  aumentarPrecio = (precio) => (this.precioVenta += precio);
-  disminuirPrecio = (precio) => (this.precioVenta -= precio);
+  aumentarPrecio = (precio) => (this.precio += precio);
+  disminuirPrecio = (precio) => (this.precio -= precio);
   aumentarStock = (cantidad) => (this.cantidad += cantidad);
   disminuirStock = (cantidad) => (this.cantidad -= cantidad);
 }
@@ -37,12 +37,12 @@ function agregarDatosDeLibro() {
 }
 
 function listaProductos() {
-    for (let index = 0; index < Libros.length; index++) {
-        alert("Codigo: " + Libros[index].codigo + "Libro: " + Libros[index].nombre +  "Autor:" + Libros[index].autor + " Editorial: " + Libros[index].editorial +" Precio: " + Libros[index].precioVenta + " Stock: " + Libros[index].cantidad);
+    for (let index = 0; index < libros.length; index++) {
+        alert("Codigo: " + libros[index].codigo + "Libro: " + libros[index].nombre +  "Autor:" + libros[index].autor + " Editorial: " + libros[index].editorial +" Precio: " + libros[index].precio + " Stock: " + libros[index].cantidad);
     }
 }
 
-console.log(Libros);
+console.log(libros);
 
 
 function mostrarMenu() {
@@ -61,34 +61,12 @@ function convertirObjetoEnTexto(objeto) {
   return texto;
 }
 
-function crearMensaje (){
-    let mensaje = 'Que libro desea comprar?'
-    let count = 1
-  
-    for(let Libro of Libros){
-      mensaje += `\n${count}. ${Libro.nombre} - $ ${Libro.precio}`
-      count++
-    }
-  
-    mensaje += `\n${count}. Salir`
-  
-    return mensaje
+function procesarCompra (){
+    
+alert(`Compro ${cantidad} unidad de ${libros.nombre} por $ ${cantidad * libros.precio}`)
+    return cantidad * libros.precio
   }
 
-  function venta(prodLibro, unidades){
-    let Total = 0;
-    Libros.map(function(dato){
-        if(dato.nombre == prodLibro){
-            if (dato.cantidad > unidades){
-                Total = dato.precioVenta * unidades;
-                dato.cantidad -= unidades;
-            }else{
-                alert("No hay stock de este Libro");
-            }
-        }
-    });
-    return Total;
-}
 
 function procesarInventario() {
   let opcionSeleccionada = mostrarMenu();
@@ -100,11 +78,14 @@ function procesarInventario() {
           case 1:
             miLibro = agregarDatosDeLibro();
             break;
+
           case 2:
             const PRECIO_A_AUMENTAR = parseFloat(
               prompt("Ingrese en cuanto aumenta el precio del Libro")
             );
+            
             miLibro.aumentarPrecio(PRECIO_A_AUMENTAR);
+
             break;
 
           case 3:
@@ -112,6 +93,7 @@ function procesarInventario() {
               prompt("Ingrese en cuanto disminuye el precio del Libro")
             );
             miLibro.disminuirPrecio(PRECIO_A_DISMINUIR);
+
             break;
 
           case 4:
@@ -119,6 +101,7 @@ function procesarInventario() {
               prompt("Ingrese la cantidad de Libros a aumentar")
             );
             miLibro.aumentarStock(LIBROS_A_AUMENTAR);
+
             break;
 
           case 5:
@@ -126,17 +109,21 @@ function procesarInventario() {
               prompt("Ingrese la cantidad de Libros a disminuir")
             );
             miLibro.disminuirStock(LIBROS_A_DISMINUIR);
+
             break;
 
           case 6:
-            crearMensaje ();
-            venta();
+            prompt("Ingresa el nombre del libro que queres comprar:");
+            prompt("Cuantas unidades desea comprar?:");
+            miLibro.vender();
+            procesarCompra();
 
             break;
 
           case 7:
             const OBJETO_TEXTO = convertirObjetoEnTexto(miLibro);
             alert(OBJETO_TEXTO);
+
             break;
 
           default:
@@ -154,8 +141,8 @@ function procesarInventario() {
 }
 
 function main() {
-  miLibro = agregarDatosDeLibro();
   procesarInventario();
+  miLibro = agregarDatosDeLibro();
 
 }
 
